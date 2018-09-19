@@ -10,8 +10,8 @@ export class NewsService {
 
   constructor(private http: HttpClient) { }
 
-  getNews() {
-    return this.http.get<any>(`${environment.api}/news`);
+  getNews(url: string) {
+    return this.http.get<any>(`${environment.api}/${url}`);
   }
 
 }
