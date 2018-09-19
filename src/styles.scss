@@ -1,0 +1,15 @@
+/* You can add global styles to this file, and also import other style files */
+@import "initial-variables";
+@import "functions";
+
+$darkblue: #220055;
+$darkblue-invert: #ffffff;
+
+$primary: $darkblue;
+$primary-invert: $darkblue-invert;
+$navbar-burger-color: $white;
+
+$navbar-height: 5.25rem;
+$navbar-item-img-max-height: 2.75rem;
+
+@import "bulma";
