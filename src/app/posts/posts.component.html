@@ -1,0 +1,94 @@
+
+<div class="columns">
+  <div class="column is-3">
+    <div class="field has-addons">
+      <p class="control">
+        <input class="input" type="text" placeholder="Text input" #newQuery>
+      </p>
+      <p class="control">
+        <button class="button" (click)="addHero(newQuery.value)">Search</button>
+      </p>
+    </div>
+
+    <div class="content">
+      <ul><li *ngFor="let search of searches">{{search}}</li></ul>
+    </div>
+
+    <form>
+      <p> Endpoint: {{selectedEndpoint}} </p>
+      <div class="select">
+        <select placeholder="Endpoint" [(ngModel)]="selectedEndpoint" name="food">
+          <option *ngFor="let food of endpoints" [value]="food.value">
+            {{food.viewValue}}
+          </option>
+        </select>
+      </div>
+    </form>
+    <br>
+
+    <form>
+      <p> Sort by: {{selectedSortBy}} </p>
+      <div class="select">
+        <select placeholder="Sort by" [(ngModel)]="selectedSortBy" name="food">
+          <option *ngFor="let food of sortBy" [value]="food.value">
+            {{food.viewValue}}
+          </option>
+        </select>
+      </div>
+    </form>
+    <br>
+
+    <form>
+      <p> Category: {{selectedCategory}} </p>
+      <div class="select">
+        <select placeholder="Category" [(ngModel)]="selectedCategory" name="food">
+          <option *ngFor="let food of categories" [value]="food.value">
+            {{food.viewValue}}
+          </option>
+        </select>
+      </div>
+    </form>
+    <br>
+
+    <form>
+      <p> Language: {{selectedLanguage}} </p>
+      <div class="select">
+        <select placeholder="Language" [(ngModel)]="selectedLanguage" name="food">
+          <option *ngFor="let food of languages" [value]="food.value">
+            {{food.viewValue}}
+          </option>
+        </select>
+      </div>
+    </form>
+
+  </div>
+  <div class="column">
+    <div class="columns is-multiline" *ngIf="news">
+      <div class="column is-4" *ngFor="let user of news">
+        <div class="card">
+          <div class="card-image">
+            <figure class="image is-4by3">
+              <a href="{{ user.url }}">
+                <img src="{{ user.urlToImage }}"/>
+              </a>
+            </figure>
+          </div>
+          <div class="card-content">
+            <div class="media">
+              <div class="media-content">
+                <a href="{{ user.url }}" ><p class="title is-4">{{ user.title }}</p></a>
+                <a href="{{ user.url }}" ><p class="subtitle is-6">@{{ user.source.name }}</p></a>
+              </div>
+            </div>
+            <div class="content">
+              <p><small>{{user.description}}</small></p>
+              <p>{{ user.publishedAt | amUtc | amTimeAgo }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+

@@ -1,19 +1,5 @@
 <!--The content below is only a placeholder and can be replaced.-->
 <section class="hero is-info is-small">
-  <div class="hero-head">
-    <nav class="navbar">
-      <div class="container">
-        <div id="navbarMenuHeroB" class="navbar-menu">
-          <div class="navbar-end">
-            <a class="navbar-item">
-              Home
-            </a>
-          </div>
-        </div>
-      </div>
-    </nav>
-  </div>
-
   <div class="hero-body">
     <div class="container has-text-centered">
       <p class="title">
@@ -28,24 +14,15 @@
   <div class="hero-foot">
     <nav class="tabs is-boxed is-fullwidth">
       <div class="container">
-        <ul>
-          <li class="is-active">
-            <a>Overview</a>
+        <ul ng-init="selectedTab = 'posts'">
+          <li [ngClass]="{'is-active':selectedTab === 'posts'}" (click)="selectedTab = 'posts'">
+            <a  href="#items" routerLink="newsapp/posts" md-button>Search</a>
           </li>
-          <li>
-            <a>Modifiers</a>
+          <li [ngClass]="{'is-active':selectedTab === 'news_en'}" (click)="selectedTab = 'news_en'">
+            <a href="#users" routerLink="newsapp/news" md-button>News english</a>
           </li>
-          <li>
-            <a>Grid</a>
-          </li>
-          <li>
-            <a>Elements</a>
-          </li>
-          <li>
-            <a>Components</a>
-          </li>
-          <li>
-            <a>Layout</a>
+          <li [ngClass]="{'is-active': selectedTab === 'news_fr'}" (click)="selectedTab = 'news_fr'">
+            <a routerLink="newsapp/news_fr" md-button>News France</a>
           </li>
         </ul>
       </div>

@@ -10,6 +10,7 @@ import { NewsService } from './news.service';
 export class AppComponent implements OnInit {
   title = 'newsapp';
   burger: boolean = false;
+  selectedTab: string = 'posts';
 
   constructor(private newsservice: NewsService) {}
 
