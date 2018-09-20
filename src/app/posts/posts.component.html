@@ -63,6 +63,13 @@
 
   </div>
   <div class="column">
+
+    <div *ngIf="error">
+      <p>
+        {{ error }}
+      </p>
+    </div>
+
     <div class="columns is-multiline" *ngIf="news">
       <div class="column is-4" *ngFor="let user of news">
         <div class="card">

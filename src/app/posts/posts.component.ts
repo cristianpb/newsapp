@@ -11,6 +11,7 @@ export class PostsComponent implements OnInit {
   news= []
   newsSources= [];
   searches = [];
+  error: string;
   params: any;
   selectedCategory: string;
   selectedLanguage: string;
@@ -28,7 +29,8 @@ export class PostsComponent implements OnInit {
     {value: 'science', viewValue: 'Science'},
     {value: 'sports', viewValue: 'Sports'},
     {value: 'technology', viewValue: 'Technology'},
-    {value: 'entertainment', viewValue: 'Entertainment'}
+    {value: 'entertainment', viewValue: 'Entertainment'},
+    {value: '', viewValue: 'Empty'}
   ];
   languages: any = [
     {value: 'fr', viewValue: 'French'},
@@ -37,12 +39,14 @@ export class PostsComponent implements OnInit {
     {value: 'it', viewValue: 'Italian'},
     {value: 'de', viewValue: 'German'},
     {value: 'nl', viewValue: 'Netherlands'},
-    {value: 'es', viewValue: 'Spanish'}
+    {value: 'es', viewValue: 'Spanish'},
+    {value: '', viewValue: 'Empty'}
   ];
   sortBy: any = [
     {value: 'publishedAt', viewValue: 'Newsest firsts'},
     {value: 'relevancy', viewValue: 'More closely related to query'},
-    {value: 'popularity', viewValue: 'Popular sources and publishers'}
+    {value: 'popularity', viewValue: 'Popular sources and publishers'},
+    {value: '', viewValue: 'Empty'},
   ];
   addHero(newQuery: string) {
     //if (newQuery) {
@@ -56,12 +60,14 @@ export class PostsComponent implements OnInit {
       this.newsService.getNewBySource(this.params)
         .subscribe(
           response => {
+            this.error = ""
             this.news = response.articles
             this.searches.push(`${newQuery} ${response.articles.length}/${response.totalResults}`);
             //console.log(response);
           },
           error => {
-            this.searches.push(newQuery + ' Error');
+            this.error = error.error.message;
+            this.news = []
           }
         );
     //}
