@@ -8,10 +8,10 @@ const newsapi_key = process.env.NEWSAPI_KEY;
 
 export class ProcessNews {
   static searchNews = async (db: Db, collection: string, queryList: string[], endpoint: string) => {
+    await db.collection(collection).deleteMany({});
     queryList.forEach(async (query) => {
       const resp = await axios.get(`https://newsapi.org/v2/${endpoint}?q=${query}&apiKey=${newsapi_key}&sortBy=publishedAt`);
       console.log(resp.data.articles);
-      await db.collection(collection).deleteMany({});
       ProcessNews.processNews(db, resp.data.articles, collection);
     });
   }
