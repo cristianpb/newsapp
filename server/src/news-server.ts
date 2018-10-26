@@ -2,14 +2,10 @@ import { createServer, Server } from 'http';
 import { Request, Response } from 'express';
 import express from 'express';
 import path from 'path';
+import { environment } from './environment';
 const graph = require('fbgraph');
 
 import { MongoClient } from 'mongodb';
-
-const mlab_username = process.env.MLAB_USERNAME
-const mlab_password = process.env.MLAB_PASSWORD
-const mongourl = `mongodb://${mlab_username}:${mlab_password}@ds163162.mlab.com:63162/newsapp`;
-//const mongourl = 'mongodb://localhost:27017/newsapp';
 
 export class NewsServer {
   public static readonly PORT:number = 3002;
@@ -30,7 +26,7 @@ export class NewsServer {
 
   private mongoConnect(): void {
     console.log('Connected');
-    MongoClient.connect(mongourl, { useNewUrlParser: true }).then(
+    MongoClient.connect(environment.mongourl, { useNewUrlParser: true }).then(
       connection => {
       this.db = connection.db('newsapp');
       }
@@ -52,15 +48,15 @@ export class NewsServer {
   private static_content(): void {
     this.app.use(require('cors')());
     this.app.use(require('body-parser').json());
-    this.app.use(express.static(path.join(__dirname, '../../dist')));
-    this.app.get('/', (req,res) => {
-      res.sendFile(path.join(__dirname, '../../dist/index.html'))
+    this.app.use(express.static(path.join(__dirname, '../../docs')));
+    this.app.get('/', (req, res) => {
+      res.sendFile(path.join(__dirname, '../../docs/index.html'));
     });
-    this.app.get('/dashboard', (req,res) => {
-      res.sendFile(path.join(__dirname, '../../dist/index.html'))
+    this.app.get('/dashboard', (req, res) => {
+      res.sendFile(path.join(__dirname, '../../docs/index.html'));
     });
-    this.app.get('/news', (req,res) => {
-      res.sendFile(path.join(__dirname, '../../dist/index.html'))
+    this.app.get('/news', (req, res) => {
+      res.sendFile(path.join(__dirname, '../../docs/index.html'));
     });
   }
 

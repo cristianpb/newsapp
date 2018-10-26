@@ -1,18 +1,15 @@
 // importing mongoClient to connect at mongodb
 import { MongoClient } from 'mongodb';
-import { processNews } from '../lib/processNews';
+import { ProcessNews } from '../lib/processNews';
 import { ProcessFacebook } from '../lib/facebookPost';
 import { magenta } from 'colors';
+import { environment } from '../environment';
 
 import { CronJob } from 'cron';
 
-const mlab_username = process.env.MLAB_USERNAME
-const mlab_password = process.env.MLAB_PASSWORD
-const mongourl = `mongodb://${mlab_username}:${mlab_password}@ds163162.mlab.com:63162/newsapp`;
-
 (async () => {
   // connecting at mongoClient
-  const connection = await MongoClient.connect(mongourl, { useNewUrlParser: true });
+  const connection = await MongoClient.connect(environment.mongourl, { useNewUrlParser: true });
 
   const db = await connection.db('newsapp');
   console.log('Connected');
@@ -41,21 +38,20 @@ const mongourl = `mongodb://${mlab_username}:${mlab_password}@ds163162.mlab.com:
   //  timeZone: 'Europe/Paris'
   //});
 
-  await processNews.searchNews(db, 'news_gswai', 'artificial%20intelligence', 'top-headlines');
-  await processNews.searchNews(db, 'news_fr', '+intelligence%20AND%20+artificielle%20AND%20(paris%20OR%20france)%20-smartphone', 'everything');
-  await processNews.searchNews(db, 'news', '+artificial%20AND%20+intelligence%20AND%20(paris%20OR%20france)%20-smartphone', 'everything');
+  await ProcessNews.searchNews(db, 'news_gswai', ['artificial%20intelligence', 'deep%20learning', 'machine%20learning'], 'top-headlines');
+  await ProcessNews.searchNews(db, 'news_fr', ['+intelligence%20AND%20+artificielle%20AND%20(paris%20OR%20france)%20-smartphone'], 'everything');
+  await ProcessNews.searchNews(db, 'news', ['+artificial%20AND%20+intelligence%20AND%20(paris%20OR%20france)%20-smartphone'], 'everything');
   new CronJob({
     cronTime: '00 */4 * * *',
     onTick: async function () {
       /*
        * At every 6 minutes
        */
-      await processNews.searchNews(db, 'news_gswai', 'artificial%20intelligence', 'top-headlines');
-      await processNews.searchNews(db, 'news_fr', '+intelligence%20AND%20+artificielle%20AND%20(paris%20OR%20france)%20-smartphone', 'everything');
-      await processNews.searchNews(db, 'news', '+artificial%20AND%20+intelligence%20AND%20(paris%20OR%20france)%20-smartphone', 'everything');
+      await ProcessNews.searchNews(db, 'news_gswai', ['artificial%20intelligence'], 'top-headlines');
+      await ProcessNews.searchNews(db, 'news_fr', ['+intelligence%20AND%20+artificielle%20AND%20(paris%20OR%20france)%20-smartphone'], 'everything');
+      await ProcessNews.searchNews(db, 'news', ['+artificial%20AND%20+intelligence%20AND%20(paris%20OR%20france)%20-smartphone'], 'everything');
     },
     start: true,
     timeZone: 'Europe/Paris'
   });
-
 })();
