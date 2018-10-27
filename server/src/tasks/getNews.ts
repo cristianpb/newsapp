@@ -14,29 +14,29 @@ import { CronJob } from 'cron';
   const db = await connection.db('newsapp');
   console.log('Connected');
 
-  //const FB = new ProcessFacebook(process.env.FACEBOOK_ACCESSTOKEN, 'cityaiparis', `https://ng-tweet.herokuapp.com/api/news`);
-  //new CronJob({
-  //  // At 12:05 on every day-of-week from Sunday through Friday.
-  //  cronTime: '05 12 * * 0-5',
-  //  onTick: async function () {
-  //    await FB.postNews();
-  //  },
-  //  start: true,
-  //  timeZone: 'Europe/Paris'
-  //});
+  const FB = new ProcessFacebook(process.env.FACEBOOK_ACCESSTOKEN, 'cityaiparis', `${environment.news_url}/api/news`);
+  new CronJob({
+    // At 12:05 on every day-of-week from Sunday through Friday.
+    cronTime: '05 12 * * 0-5',
+    onTick: async function () {
+      await FB.postNews();
+    },
+    start: true,
+    timeZone: 'Europe/Paris'
+  });
 
-  //const fbGswai = new ProcessFacebook(process.env.FACEBOOK_ACCESSTOKEN_GSWAI, 'GlobalSWAI', `https://ng-tweet.herokuapp.com/api/news_gswai`);
-  //const fbFrench = new ProcessFacebook(process.env.FACEBOOK_ACCESSTOKEN, 'cityaiparis', `https://ng-tweet.herokuapp.com/api/news_fr`);
-  //new CronJob({
-  //  // At 08:05 on every day-of-week from Sunday through Friday.
-  //  cronTime: '5 8 * * 0-5',
-  //  onTick: async function () {
-  //    await fbFrench.postNews();
-  //    await fbGswai.postNews();
-  //  },
-  //  start: true,
-  //  timeZone: 'Europe/Paris'
-  //});
+  const fbGswai = new ProcessFacebook(process.env.FACEBOOK_ACCESSTOKEN_GSWAI, 'GlobalSWAI', `${environment.news_url}/api/news_gswai`);
+  const fbFrench = new ProcessFacebook(process.env.FACEBOOK_ACCESSTOKEN, 'cityaiparis', `${environment.news_url}/api/news_fr`);
+  new CronJob({
+    // At 08:05 on every day-of-week from Sunday through Friday.
+    cronTime: '5 8 * * 0-5',
+    onTick: async function () {
+      await fbFrench.postNews();
+      await fbGswai.postNews();
+    },
+    start: true,
+    timeZone: 'Europe/Paris'
+  });
 
   await ProcessNews.searchNews(db, 'news_gswai', ['artificial%20intelligence', 'deep%20learning', 'machine%20learning'], 'top-headlines');
   await ProcessNews.searchNews(db, 'news_fr', ['+intelligence%20AND%20+artificielle%20AND%20(paris%20OR%20france)%20-smartphone'], 'everything');
@@ -47,7 +47,7 @@ import { CronJob } from 'cron';
       /*
        * At every 6 minutes
        */
-      await ProcessNews.searchNews(db, 'news_gswai', ['artificial%20intelligence'], 'top-headlines');
+      await ProcessNews.searchNews(db, 'news_gswai', ['artificial%20intelligence', 'deep%20learning', 'machine%20learning'], 'top-headlines');
       await ProcessNews.searchNews(db, 'news_fr', ['+intelligence%20AND%20+artificielle%20AND%20(paris%20OR%20france)%20-smartphone'], 'everything');
       await ProcessNews.searchNews(db, 'news', ['+artificial%20AND%20+intelligence%20AND%20(paris%20OR%20france)%20-smartphone'], 'everything');
     },

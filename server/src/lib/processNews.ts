@@ -11,7 +11,7 @@ export class ProcessNews {
     await db.collection(collection).deleteMany({});
     queryList.forEach(async (query) => {
       const resp = await axios.get(`https://newsapi.org/v2/${endpoint}?q=${query}&apiKey=${newsapi_key}&sortBy=publishedAt`);
-      console.log(resp.data.articles);
+      console.log(`Found ${resp.data.articles.length} for ${query}`);
       ProcessNews.processNews(db, resp.data.articles, collection);
     });
   }

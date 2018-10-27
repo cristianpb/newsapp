@@ -29,7 +29,7 @@ export class ProcessFacebook {
     if (article) {
     const content = await { message: article.description, link: article.url};
     console.log(content);
-    const res = await FB.api(`${this.facebook_page}/feed`, 'post', content)
+    const res = await FB.api(`${this.facebook_page}/feed`, 'post', content);
     console.log('Published, post Id: ' + res.id);
     }
   };
