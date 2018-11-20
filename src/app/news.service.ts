@@ -2,6 +2,17 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '../environments/environment';
 
+export interface NewsPost {
+  message: any;
+}
+
+const httpOptions = {
+  headers: new HttpHeaders({
+    'Content-Type':  'application/json',
+    'responseType': 'text'
+  })
+};
+
 @Injectable({
   providedIn: 'root'
 })
@@ -31,12 +42,19 @@ export class NewsService {
     if ( params.sortBy ) {
       this.baseurl += `&sortBy=${params.sortBy}`;
     }
-    //console.log(this.baseurl);
     return this.http.get<any>(this.baseurl);
   }
 
   getSources() {
     return this.http.get<any>('https://newsapi.org/v2/sources?language=fr&apiKey='+this.key);
+  }
+
+  saveLike (message)  {
+    return this.http.post<NewsPost>(`${environment.api}/like`, message, httpOptions);
+  }
+
+  saveDislike (message)  {
+    return this.http.post<NewsPost>(`${environment.api}/dislike`, message, httpOptions);
   }
 
 }

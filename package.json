@@ -4,7 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "node server/dist/server.js",
-    "build": "ng build",
+    "build": "ng build --aot --output-path docs",
     "build-ts": "./node_modules/.bin/tsc -p server",
     "watch-ts": "./node_modules/.bin/tsc -p server -w",
     "watch-node": "nodemon server/dist/server.js",

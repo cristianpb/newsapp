@@ -9,6 +9,7 @@ import { Article } from '../article';
 })
 export class NewsComponent implements OnInit {
   articles: Article[] = [];
+  source: string = 'news';
 
   constructor(private newsservice: NewsService) {}
 
@@ -17,10 +18,18 @@ export class NewsComponent implements OnInit {
   }
 
   getNews() {
-    this.newsservice.getNews('news').subscribe(articles => {
-      console.log(articles);
+    this.newsservice.getNews(this.source).subscribe(articles => {
       this.articles = articles.data;
     });
   }
 
+  likeNews(article: Article): void {
+    this.newsservice.saveLike({'_id': article['_id'], 'source': this.source})
+      .subscribe(message => this.getNews());
+  }
+
+  dislikeNews(article: Article): void {
+    this.newsservice.saveDislike({'_id': article['_id'], 'source': this.source})
+      .subscribe(message => this.getNews());
+  }
 }

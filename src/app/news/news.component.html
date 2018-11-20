@@ -13,13 +13,18 @@
           <div class="media-content">
             <a href="{{ user.url }}" ><p class="title is-4">{{ user.title }}</p></a>
             <a href="{{ user.url }}" ><p class="subtitle is-6">@{{ user.source.name }}</p></a>
+            <p *ngIf="user.like">{{ user.like }} likes </p>
           </div>
         </div>
         <div class="content">
           <p><small>{{user.description}}</small></p>
-          <p>{{ user.publishedAt | amUtc | amTimeAgo }}</p>
         </div>
       </div>
+      <footer class="card-footer">
+        <p href="#" class="card-footer-item">{{ user.publishedAt | amUtc | amTimeAgo }}</p>
+        <a class="card-footer-item" (click)="likeNews(user)">Like</a>
+        <a class="card-footer-item" (click)="dislikeNews(user)">Dont't like</a>
+      </footer>
     </div>
   </div>
 </div>

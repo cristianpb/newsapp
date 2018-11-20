@@ -5,7 +5,7 @@ import path from 'path';
 import { environment } from './environment';
 const graph = require('fbgraph');
 
-import { MongoClient } from 'mongodb';
+import { MongoClient, ObjectID } from 'mongodb';
 
 export class NewsServer {
   public static readonly PORT:number = 3002;
@@ -79,12 +79,35 @@ export class NewsServer {
       });
     });
 
+    this.app.post('/api/like', (req: Request, res: Response) => {
+      this.likeNews(req.body).then((result) => {
+        res.json({message: 'ok'});
+      });
+    });
+
+    this.app.post('/api/dislike', (req: Request, res: Response) => {
+      this.dislikeNews(req.body).then((result) => {
+        res.json({message: 'ok'});
+      });
+    });
+
+
   }
 
   private async getNews (name: string) {
     const res1 = await this.db.collection(name)
       .find({})
       .toArray();
+    return res1;
+  }
+
+  private async likeNews (message: any) {
+    const res1 = await this.db.collection(message.source).updateOne({'_id': ObjectID(message['_id'])}, {'$set': {'like': 1});
+    return res1;
+  }
+
+  private async dislikeNews (message: any) {
+    const res1 = await this.db.collection(message.source).updateOne({'_id': ObjectID(message['_id'])}, {'$unset': {'like': ''});
     return res1;
   }
 
