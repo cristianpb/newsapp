@@ -48,15 +48,15 @@ export class NewsServer {
   private static_content(): void {
     this.app.use(require('cors')());
     this.app.use(require('body-parser').json());
-    this.app.use(express.static(path.join(__dirname, '../../docs')));
+    this.app.use(express.static(path.join(__dirname, '/')));
     this.app.get('/', (req, res) => {
-      res.sendFile(path.join(__dirname, '../../docs/index.html'));
+      res.sendFile(path.join(__dirname, '/index.html'));
     });
     this.app.get('/dashboard', (req, res) => {
-      res.sendFile(path.join(__dirname, '../../docs/index.html'));
+      res.sendFile(path.join(__dirname, '/index.html'));
     });
     this.app.get('/news', (req, res) => {
-      res.sendFile(path.join(__dirname, '../../docs/index.html'));
+      res.sendFile(path.join(__dirname, '/index.html'));
     });
   }
 
@@ -102,12 +102,12 @@ export class NewsServer {
   }
 
   private async likeNews (message: any) {
-    const res1 = await this.db.collection(message.source).updateOne({'_id': ObjectID(message['_id'])}, {'$set': {'like': 1});
+    const res1 = await this.db.collection(message.source).updateOne({'_id': new ObjectID(message['_id'])}, {'$set': {'like': 1}});
     return res1;
   }
 
   private async dislikeNews (message: any) {
-    const res1 = await this.db.collection(message.source).updateOne({'_id': ObjectID(message['_id'])}, {'$unset': {'like': ''});
+    const res1 = await this.db.collection(message.source).updateOne({'_id': new ObjectID(message['_id'])}, {'$unset': {'like': ''}});
     return res1;
   }
 
